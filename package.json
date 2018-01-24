@@ -1,0 +1,19 @@
+{
+  "name": "noobgl-matrix",
+  "version": "0.0.1",
+  "description": "Matrix class designed for noobgl",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JordanDelcros/noobgl-matrix.git"
+  },
+  "keywords": [
+    "matrix"
+  ],
+  "author": "Jordan Delcros",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JordanDelcros/noobgl-matrix/issues"
+  },
+  "homepage": "https://github.com/JordanDelcros/noobgl-matrix#readme"
+}
