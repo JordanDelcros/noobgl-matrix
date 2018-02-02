@@ -1,3 +1,6 @@
+import { Vector3 } from "noobgl-vector";
+import { Euler } from "noobgl-euler";
+
 const IDENTITY = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
 
 export default class Matrix4 {
@@ -17,6 +20,157 @@ export default class Matrix4 {
 		};
 
 		return this;
+
+	}
+	get m11(){
+
+		return this.array[0];
+
+	}
+	get m21(){
+
+		return this.array[1];
+
+	}
+	get m31(){
+
+		return this.array[2];
+
+	}
+	get m41(){
+
+		return this.array[3];
+
+	}
+	get m12(){
+
+		return this.array[4];
+
+	}
+	get m22(){
+
+		return this.array[5];
+
+	}
+	get m32(){
+
+		return this.array[6];
+
+	}
+	get m42(){
+
+		return this.array[7];
+
+	}
+	get m13(){
+
+		return this.array[8];
+
+	}
+	get m23(){
+
+		return this.array[9];
+
+	}
+	get m33(){
+
+		return this.array[10];
+
+	}
+	get m43(){
+
+		return this.array[11];
+
+	}
+	get m14(){
+
+		return this.array[12];
+
+	}
+	get m24(){
+
+		return this.array[13];
+
+	}
+	get m34(){
+
+		return this.array[14];
+
+	}
+	get m44(){
+
+		return this.array[15];
+
+	}
+	get determinant(){
+
+		var tmp_0 = this.m33 * this.m44;
+		var tmp_1 = this.m34 * this.m43;
+		var tmp_2 = this.m32 * this.m44;
+		var tmp_3 = this.m34 * this.m42;
+		var tmp_4 = this.m32 * this.m43;
+		var tmp_5 = this.m33 * this.m42;
+		var tmp_6 = this.m31 * this.m44;
+		var tmp_7 = this.m34 * this.m41;
+		var tmp_8 = this.m31 * this.m43;
+		var tmp_9 = this.m33 * this.m41;
+		var tmp_10 = this.m31 * this.m42;
+		var tmp_11 = this.m32 * this.m41;
+		var tmp_12 = this.m13 * this.m24;
+		var tmp_13 = this.m14 * this.m23;
+		var tmp_14 = this.m12 * this.m24;
+		var tmp_15 = this.m14 * this.m22;
+		var tmp_16 = this.m12 * this.m23;
+		var tmp_17 = this.m13 * this.m22;
+		var tmp_18 = this.m11 * this.m24;
+		var tmp_19 = this.m14 * this.m21;
+		var tmp_20 = this.m11 * this.m23;
+		var tmp_21 = this.m13 * this.m21;
+		var tmp_22 = this.m11 * this.m22;
+		var tmp_23 = this.m12 * this.m21;
+
+		return (
+			this.m11 * (tmp_0 * this.m22 + tmp_3 * this.m23 + tmp_4 * this.m24) - (tmp_1 * this.m22 + tmp_2 * this.m23 + tmp_5 * this.m24)
+		+ 	this.m12 * (tmp_1 * this.m21 + tmp_6 * this.m23 + tmp_9 * this.m24) - (tmp_0 * this.m21 + tmp_7 * this.m23 + tmp_8 * this.m24)
+		+ 	this.m13 * (tmp_2 * this.m21 + tmp_7 * this.m22 + tmp_10 * this.m24) - (tmp_3 * this.m21 + tmp_6 * this.m22 + tmp_11 * this.m24)
+		+ 	this.m14 * (tmp_5 * this.m21 + tmp_8 * this.m22 + tmp_11 * this.m23) - (tmp_4 * this.m21 + tmp_9 * this.m22 + tmp_10 * this.m23)
+		);
+
+	}
+	get invertedDeterminant(){
+
+		return (1.0 / this.determinant);
+
+	}
+	get scaling(){
+
+		var scaleX = Vector3.length(this.m11, this.m21, this.m31);
+
+		var scaleY = Vector3.length(this.m12, this.m22, this.m32);
+
+		var scaleZ = Vector3.length(this.m13, this.m23, this.m33);
+
+		if( this.determinant < 0 ){
+
+			scaleX *= -1;
+
+		}
+
+		return new Vector3(scaleX, scaleY, scaleZ);
+
+	}
+	get rotation(){
+
+		var scaling = this.scaling;
+
+		var rotationMatrix = new Matrix4([
+			(this.m11 / scaling.x), (this.m21 / scaling.y), (this.m31 / scaling.z), 0,
+			(this.m12 / scaling.x), (this.m22 / scaling.y), (this.m32 / scaling.z), 0,
+			(this.m13 / scaling.x), (this.m23 / scaling.x), (this.m33 / scaling.x), 0,
+			0, 0, 0, 1
+		]);
+
+		return Euler.from(rotationMatrix);
 
 	}
 	set( matrix, offset = 0 ){
@@ -47,23 +201,6 @@ export default class Matrix4 {
 
 		};
 
-		var a00 = this.array[0];
-		var a01 = this.array[1];
-		var a02 = this.array[2];
-		var a03 = this.array[3];
-		var a10 = this.array[4];
-		var a11 = this.array[5];
-		var a12 = this.array[6];
-		var a13 = this.array[7];
-		var a20 = this.array[8];
-		var a21 = this.array[9];
-		var a22 = this.array[10];
-		var a23 = this.array[11];
-		var a30 = this.array[12];
-		var a31 = this.array[13];
-		var a32 = this.array[14];
-		var a33 = this.array[15];
-
 		var b00 = matrix[0];
 		var b01 = matrix[1];
 		var b02 = matrix[2];
@@ -82,22 +219,22 @@ export default class Matrix4 {
 		var b33 = matrix[15];
 
 		this.set([
-			b00 * a00 + b01 * a10 + b02 * a20 + b03 * a30,
-			b00 * a01 + b01 * a11 + b02 * a21 + b03 * a31,
-			b00 * a02 + b01 * a12 + b02 * a22 + b03 * a32,
-			b00 * a03 + b01 * a13 + b02 * a23 + b03 * a33,
-			b10 * a00 + b11 * a10 + b12 * a20 + b13 * a30,
-			b10 * a01 + b11 * a11 + b12 * a21 + b13 * a31,
-			b10 * a02 + b11 * a12 + b12 * a22 + b13 * a32,
-			b10 * a03 + b11 * a13 + b12 * a23 + b13 * a33,
-			b20 * a00 + b21 * a10 + b22 * a20 + b23 * a30,
-			b20 * a01 + b21 * a11 + b22 * a21 + b23 * a31,
-			b20 * a02 + b21 * a12 + b22 * a22 + b23 * a32,
-			b20 * a03 + b21 * a13 + b22 * a23 + b23 * a33,
-			b30 * a00 + b31 * a10 + b32 * a20 + b33 * a30,
-			b30 * a01 + b31 * a11 + b32 * a21 + b33 * a31,
-			b30 * a02 + b31 * a12 + b32 * a22 + b33 * a32,
-			b30 * a03 + b31 * a13 + b32 * a23 + b33 * a33
+			b00 * this.m11 + b01 * this.m12 + b02 * this.m13 + b03 * this.m14,
+			b00 * this.m21 + b01 * this.m22 + b02 * this.m23 + b03 * this.m24,
+			b00 * this.m31 + b01 * this.m32 + b02 * this.m33 + b03 * this.m34,
+			b00 * this.m41 + b01 * this.m42 + b02 * this.m43 + b03 * this.m44,
+			b10 * this.m11 + b11 * this.m12 + b12 * this.m13 + b13 * this.m14,
+			b10 * this.m21 + b11 * this.m22 + b12 * this.m23 + b13 * this.m24,
+			b10 * this.m31 + b11 * this.m32 + b12 * this.m33 + b13 * this.m34,
+			b10 * this.m41 + b11 * this.m42 + b12 * this.m43 + b13 * this.m44,
+			b20 * this.m11 + b21 * this.m12 + b22 * this.m13 + b23 * this.m14,
+			b20 * this.m21 + b21 * this.m22 + b22 * this.m23 + b23 * this.m24,
+			b20 * this.m31 + b21 * this.m32 + b22 * this.m33 + b23 * this.m34,
+			b20 * this.m41 + b21 * this.m42 + b22 * this.m43 + b23 * this.m44,
+			b30 * this.m11 + b31 * this.m12 + b32 * this.m13 + b33 * this.m14,
+			b30 * this.m21 + b31 * this.m22 + b32 * this.m23 + b33 * this.m24,
+			b30 * this.m31 + b31 * this.m32 + b32 * this.m33 + b33 * this.m34,
+			b30 * this.m41 + b31 * this.m42 + b32 * this.m43 + b33 * this.m44
 		]);
 
 		return this;
@@ -105,56 +242,7 @@ export default class Matrix4 {
 	}
 	inverse(){
 
-		var m00 = this.array[0];
-		var m01 = this.array[1];
-		var m02 = this.array[2];
-		var m03 = this.array[3];
-		var m10 = this.array[4];
-		var m11 = this.array[5];
-		var m12 = this.array[6];
-		var m13 = this.array[7];
-		var m20 = this.array[8];
-		var m21 = this.array[9];
-		var m22 = this.array[10];
-		var m23 = this.array[11];
-		var m30 = this.array[12];
-		var m31 = this.array[13];
-		var m32 = this.array[14];
-		var m33 = this.array[15];
-
-		var tmp_0 = m22 * m33;
-		var tmp_1 = m32 * m23;
-		var tmp_2 = m12 * m33;
-		var tmp_3 = m32 * m13;
-		var tmp_4 = m12 * m23;
-		var tmp_5 = m22 * m13;
-		var tmp_6 = m02 * m33;
-		var tmp_7 = m32 * m03;
-		var tmp_8 = m02 * m23;
-		var tmp_9 = m22 * m03;
-		var tmp_10 = m02 * m13;
-		var tmp_11 = m12 * m03;
-		var tmp_12 = m20 * m31;
-		var tmp_13 = m30 * m21;
-		var tmp_14 = m10 * m31;
-		var tmp_15 = m30 * m11;
-		var tmp_16 = m10 * m21;
-		var tmp_17 = m20 * m11;
-		var tmp_18 = m00 * m31;
-		var tmp_19 = m30 * m01;
-		var tmp_20 = m00 * m21;
-		var tmp_21 = m20 * m01;
-		var tmp_22 = m00 * m11;
-		var tmp_23 = m10 * m01;
-
-		var t0 = (tmp_0 * m11 + tmp_3 * m21 + tmp_4 * m31) - (tmp_1 * m11 + tmp_2 * m21 + tmp_5 * m31);
-		var t1 = (tmp_1 * m01 + tmp_6 * m21 + tmp_9 * m31) - (tmp_0 * m01 + tmp_7 * m21 + tmp_8 * m31);
-		var t2 = (tmp_2 * m01 + tmp_7 * m11 + tmp_10 * m31) - (tmp_3 * m01 + tmp_6 * m11 + tmp_11 * m31);
-		var t3 = (tmp_5 * m01 + tmp_8 * m11 + tmp_11 * m21) - (tmp_4 * m01 + tmp_9 * m11 + tmp_10 * m21);
-
-		var determinant = (m00 * t0 + m10 * t1 + m20 * t2 + m30 * t3);
-
-		if( determinant == 0 ){
+		if( this.determinant == 0 ){
 
 			console.error("Matrix4 error: cannot inverse matrix, determinant is equal to 0");
 
@@ -164,25 +252,50 @@ export default class Matrix4 {
 
 		};
 
-		var invertedDeterminant = (1.0 / determinant);
+		var invertedDeterminant = this.invertedDeterminant;
+
+		var tmp_0 = this.m33 * this.m44;
+		var tmp_1 = this.m34 * this.m43;
+		var tmp_2 = this.m32 * this.m44;
+		var tmp_3 = this.m34 * this.m42;
+		var tmp_4 = this.m32 * this.m43;
+		var tmp_5 = this.m33 * this.m42;
+		var tmp_6 = this.m31 * this.m44;
+		var tmp_7 = this.m34 * this.m41;
+		var tmp_8 = this.m31 * this.m43;
+		var tmp_9 = this.m33 * this.m41;
+		var tmp_10 = this.m31 * this.m42;
+		var tmp_11 = this.m32 * this.m41;
+		var tmp_12 = this.m13 * this.m24;
+		var tmp_13 = this.m14 * this.m23;
+		var tmp_14 = this.m12 * this.m24;
+		var tmp_15 = this.m14 * this.m22;
+		var tmp_16 = this.m12 * this.m23;
+		var tmp_17 = this.m13 * this.m22;
+		var tmp_18 = this.m11 * this.m24;
+		var tmp_19 = this.m14 * this.m21;
+		var tmp_20 = this.m11 * this.m23;
+		var tmp_21 = this.m13 * this.m21;
+		var tmp_22 = this.m11 * this.m22;
+		var tmp_23 = this.m12 * this.m21;
 
 		this.set([
-			invertedDeterminant * t0,
-			invertedDeterminant * t1,
-			invertedDeterminant * t2,
-			invertedDeterminant * t3,
-			invertedDeterminant * ((tmp_1 * m10 + tmp_2 * m20 + tmp_5 * m30) - (tmp_0 * m10 + tmp_3 * m20 + tmp_4 * m30)),
-			invertedDeterminant * ((tmp_0 * m00 + tmp_7 * m20 + tmp_8 * m30) - (tmp_1 * m00 + tmp_6 * m20 + tmp_9 * m30)),
-			invertedDeterminant * ((tmp_3 * m00 + tmp_6 * m10 + tmp_11 * m30) - (tmp_2 * m00 + tmp_7 * m10 + tmp_10 * m30)),
-			invertedDeterminant * ((tmp_4 * m00 + tmp_9 * m10 + tmp_10 * m20) - (tmp_5 * m00 + tmp_8 * m10 + tmp_11 * m20)),
-			invertedDeterminant * ((tmp_12 * m13 + tmp_15 * m23 + tmp_16 * m33) - (tmp_13 * m13 + tmp_14 * m23 + tmp_17 * m33)),
-			invertedDeterminant * ((tmp_13 * m03 + tmp_18 * m23 + tmp_21 * m33) - (tmp_12 * m03 + tmp_19 * m23 + tmp_20 * m33)),
-			invertedDeterminant * ((tmp_14 * m03 + tmp_19 * m13 + tmp_22 * m33) - (tmp_15 * m03 + tmp_18 * m13 + tmp_23 * m33)),
-			invertedDeterminant * ((tmp_17 * m03 + tmp_20 * m13 + tmp_23 * m23) - (tmp_16 * m03 + tmp_21 * m13 + tmp_22 * m23)),
-			invertedDeterminant * ((tmp_14 * m22 + tmp_17 * m32 + tmp_13 * m12) - (tmp_16 * m32 + tmp_12 * m12 + tmp_15 * m22)),
-			invertedDeterminant * ((tmp_20 * m32 + tmp_12 * m02 + tmp_19 * m22) - (tmp_18 * m22 + tmp_21 * m32 + tmp_13 * m02)),
-			invertedDeterminant * ((tmp_18 * m12 + tmp_23 * m32 + tmp_15 * m02) - (tmp_22 * m32 + tmp_14 * m02 + tmp_19 * m12)),
-			invertedDeterminant * ((tmp_22 * m22 + tmp_16 * m02 + tmp_21 * m12) - (tmp_20 * m12 + tmp_23 * m22 + tmp_17 * m02))
+			invertedDeterminant * (tmp_0 * this.m22 + tmp_3 * this.m23 + tmp_4 * this.m24) - (tmp_1 * this.m22 + tmp_2 * this.m23 + tmp_5 * this.m24),
+			invertedDeterminant * (tmp_1 * this.m21 + tmp_6 * this.m23 + tmp_9 * this.m24) - (tmp_0 * this.m21 + tmp_7 * this.m23 + tmp_8 * this.m24),
+			invertedDeterminant * (tmp_2 * this.m21 + tmp_7 * this.m22 + tmp_10 * this.m24) - (tmp_3 * this.m21 + tmp_6 * this.m22 + tmp_11 * this.m24),
+			invertedDeterminant * (tmp_5 * this.m21 + tmp_8 * this.m22 + tmp_11 * this.m23) - (tmp_4 * this.m21 + tmp_9 * this.m22 + tmp_10 * this.m23),
+			invertedDeterminant * ((tmp_1 * this.m12 + tmp_2 * this.m13 + tmp_5 * this.m14) - (tmp_0 * this.m12 + tmp_3 * this.m13 + tmp_4 * this.m14)),
+			invertedDeterminant * ((tmp_0 * this.m11 + tmp_7 * this.m13 + tmp_8 * this.m14) - (tmp_1 * this.m11 + tmp_6 * this.m13 + tmp_9 * this.m14)),
+			invertedDeterminant * ((tmp_3 * this.m11 + tmp_6 * this.m12 + tmp_11 * this.m14) - (tmp_2 * this.m11 + tmp_7 * this.m12 + tmp_10 * this.m14)),
+			invertedDeterminant * ((tmp_4 * this.m11 + tmp_9 * this.m12 + tmp_10 * this.m13) - (tmp_5 * this.m11 + tmp_8 * this.m12 + tmp_11 * this.m13)),
+			invertedDeterminant * ((tmp_12 * this.m42 + tmp_15 * this.m43 + tmp_16 * this.m44) - (tmp_13 * this.m42 + tmp_14 * this.m43 + tmp_17 * this.m44)),
+			invertedDeterminant * ((tmp_13 * this.m41 + tmp_18 * this.m43 + tmp_21 * this.m44) - (tmp_12 * this.m41 + tmp_19 * this.m43 + tmp_20 * this.m44)),
+			invertedDeterminant * ((tmp_14 * this.m41 + tmp_19 * this.m42 + tmp_22 * this.m44) - (tmp_15 * this.m41 + tmp_18 * this.m42 + tmp_23 * this.m44)),
+			invertedDeterminant * ((tmp_17 * this.m41 + tmp_20 * this.m42 + tmp_23 * this.m43) - (tmp_16 * this.m41 + tmp_21 * this.m42 + tmp_22 * this.m43)),
+			invertedDeterminant * ((tmp_14 * this.m33 + tmp_17 * this.m34 + tmp_13 * this.m32) - (tmp_16 * this.m34 + tmp_12 * this.m32 + tmp_15 * this.m33)),
+			invertedDeterminant * ((tmp_20 * this.m34 + tmp_12 * this.m31 + tmp_19 * this.m33) - (tmp_18 * this.m33 + tmp_21 * this.m34 + tmp_13 * this.m31)),
+			invertedDeterminant * ((tmp_18 * this.m32 + tmp_23 * this.m34 + tmp_15 * this.m31) - (tmp_22 * this.m34 + tmp_14 * this.m31 + tmp_19 * this.m32)),
+			invertedDeterminant * ((tmp_22 * this.m33 + tmp_16 * this.m31 + tmp_21 * this.m32) - (tmp_20 * this.m32 + tmp_23 * this.m33 + tmp_17 * this.m31))
 		]);
 
 		return this;
@@ -190,13 +303,11 @@ export default class Matrix4 {
 	}
 	transpose(){
 
-		var clone = this.clone();
-
 		this.set([
-			clone.array[0], clone.array[4], clone.array[8], clone.array[12],
-			clone.array[1], clone.array[5], clone.array[9], clone.array[13],
-			clone.array[2], clone.array[6], clone.array[10], clone.array[14],
-			clone.array[3], clone.array[7], clone.array[11], clone.array[15]
+			this.m11, this.m12, this.m13, this.m14,
+			this.m21, this.m22, this.m23, this.m24,
+			this.m31, this.m32, this.m33, this.m34,
+			this.m41, this.m42, this.m43, this.m44
 		]);
 
 		return this;
@@ -402,7 +513,13 @@ export default class Matrix4 {
 
 				break;
 
-		};
+			default:
+
+				this.rotateX(x).rotateY(y).rotateZ(z);
+
+				break;
+
+		}
 
 		return this;
 
