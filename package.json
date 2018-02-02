@@ -1,6 +1,6 @@
 {
   "name": "noobgl-matrix",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Matrix classes designed for noobgl",
   "main": "index.js",
   "repository": {
@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/noobgl/noobgl-matrix#readme",
   "dependencies": {
-    "noobgl-euler": "0.0.1",
-    "noobgl-vector": "0.0.1"
+    "noobgl-euler": "^0.0.2",
+    "noobgl-vector": "^0.0.2"
   }
 }
