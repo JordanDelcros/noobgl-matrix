@@ -1,11 +1,8 @@
 # noobgl-matrix
-WebGL 2 without the boring bits
+This module contains classes that includes basics matrix computations tools.
 
 [![badge npm version][badge npm version]][npm link]
 [![badge github license]][badge github license]
-
-## Introduction
-This module contains classes that includes basics matrix computations tools.
 
 ## Instalation
 
