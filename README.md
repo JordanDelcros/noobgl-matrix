@@ -13,7 +13,7 @@ npm install noobgl-matrix
 ## Usage
 
 ```javascript
-import { Matrix4 } from "noobgl";
+import { Matrix4 } from "noobgl-matrix";
 ```
 
 ## Documentation
